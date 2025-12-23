@@ -1,51 +1,44 @@
 # Diffusion Models
 
-This repository contains implementations of motion-diffusion-model (text-to-motion)
+This repository contains implementations of stable-diffusion (latent diffusion model) (text-to-image & image-to-image)
 
 ## Git clone
 ```bash
-git clone https://github.com/azeroman7/motion-diffusion-model.git
+git clone https://github.com/azeroman7/stable-diffusion.git
 ```
 
 ## Install Environment via Anaconda (Recommended)
 ```bash
-cd motion-diffusion-model
+cd stable-diffusion
+conda install pytorch torchvision -c pytorch
 
-sudo apt update
-sudo apt install ffmpeg
-
-conda env create -f environment.yml
-conda activate mdm
-
-python -m spacy download en_core_web_sm
-pip install git+https://github.com/openai/CLIP.git
-sudo apt install -y imagemagick
-pip install moviepy
+pip install diffusers==0.10.2
+pip install huggingface_hub==0.10.0
+pip install transformers==4.25.1
+pip install invisible-watermark
 ```
-## Additional installation (body_models, etc.)
+
+## ckpt for stable-diffusion
 ```bash
-bash prepare/download_glove.sh
+--> download sd-v1-1.ckpt from https://huggingface.co/CompVis/stable-diffusion-v-1-1-original
 
---> download t2m.zip from https://drive.google.com/uc?id=1O_GUHgjDbl2tgbyfSwZOUYXDACnk25Kb
---> download kit.zip from https://drive.google.com/uc?id=12liZW5iyvoybXD8eOw4VanTgsMtynCuU
-unzip t2m.zip
-unzip kit.zip
+mkdir -p models/ldm/stable-diffusion-v1/
+cp ~/Downloads/sd-v1-1.ckpt models/ldm/stable-diffusion-v1/model.ckpt
 
---> download smpl.zip from https://drive.google.com/uc?id=1INYlGA76ak_cKGzvpOV2Pe6RkYTlXTW2
-unzip smpl.zip -d body_models
 ```
 
-## Dataset & Model for Text to Motion
-HumanML3D data is already copied in ./dataset/HumanML3D
-[HumanML3D from https://github.com/EricGuo5513/HumanML3D]
-
+## Run script --> see outputs folder for results
+txt2img:
 ```bash
---> download model "humanml_trans_enc_512.zip" from https://drive.google.com/file/d/1PE0PK8e5a5j-7-Xhs5YET5U5pGh0c821/view
-# copy to ./save/humanml_trans_enc_512/model000200000.pt & args.json
-unzip humanml_trans_enc_512.zip -d ./save
+python scripts/txt2img.py --prompt "a photograph of an astronaut riding a horse" --plms
+
+or ./run1.sh
 ```
 
-## Run script --> ./save/\*/\*/*.mp4
+img2img:
 ```bash
-./run.sh
+python scripts/img2img.py --prompt "A fantasy landscape, trending on artstation" --init-img data/bertrand-gabioud-CpuFzIsHYJ0.png --strength 0.5
+
+or ./run2.sh
 ```
+
